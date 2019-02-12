@@ -1,16 +1,13 @@
 import * as vscode from 'vscode';
-import { ETIMEDOUT } from 'constants';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('extension.docs-no-localization', () => {
-
-		const editor: vscode.TextEditor = vscode.window.activeTextEditor;
-
-		if (editor !== undefined) {
+		if (vscode.window.activeTextEditor !== undefined) {
+			const editor: vscode.TextEditor = vscode.window.activeTextEditor;
 			const lang = editor.document.languageId;
 			const selection = editor.selection;
 			const text = editor.document.getText(selection);
-			let newText: string;
+			let newText: string = '';
 			switch (lang) {
 				case "markdown":
 					newText = outputNoLoc(lang, text);
@@ -39,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 						placeHolder: 'Select which type of document you are working with'
 					};
 					vscode.window.showQuickPick(items, options).then(language => {
-						newText = outputNoLoc(language.detail, text);
+							newText = outputNoLoc(language.detail, text);
 						editor.edit(builder => builder.replace(selection, newText));
 					});
 
@@ -58,9 +55,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-function outputNoLoc(language: String, text: String): String {
+function outputNoLoc(language: string, text: String): string {
 
-	let newText: String;
+	let newText: string;
 	switch (language) {
 		case "markdown":
 			newText = ':::noloc text="' + (text.length <= 0 ? 'Word-To-Not-Localize' : text) + '":::';

@@ -2,6 +2,9 @@
 	"name": "docs-no-localization",
 	"displayName": "Docs No Localization",
 	"description": "Identify Content to NOT be localized",
+	"publisher": "cillroy",
+	"author": "cillroy",
+	"icon": "images/docs-dot-com.png",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.31.0"
