@@ -5,8 +5,8 @@ export function activate(context: vscode.ExtensionContext) {
 		if (vscode.window.activeTextEditor !== undefined) {
 			const editor: vscode.TextEditor = vscode.window.activeTextEditor;
 			const lang = editor.document.languageId;
-			const selection = editor.selection;
-			const text = editor.document.getText(selection);
+			const selectedText = editor.selection;
+			const text = editor.document.getText(selectedText);
 			let newText: string = '';
 			switch (lang) {
 				case "markdown":
@@ -36,15 +36,21 @@ export function activate(context: vscode.ExtensionContext) {
 						placeHolder: 'Select which type of document you are working with'
 					};
 					vscode.window.showQuickPick(items, options).then(language => {
-							newText = outputNoLoc(language.detail, text);
-						editor.edit(builder => builder.replace(selection, newText));
+						if (!language) {
+							return;
+						}
+						let langSelect = language.detail;
+						if (langSelect !== undefined) {
+							newText = outputNoLoc(langSelect, text);
+						}
+						editor.edit(builder => builder.replace(selectedText, newText));
 					});
 
 					break;
 			}
 
 			if (newText.length > 0) {
-				editor.edit(builder => builder.replace(selection, newText));
+				editor.edit(builder => builder.replace(selectedText, newText));
 			}
 		} else {
 			vscode.window.showErrorMessage('You must have a file open to use the `Docs No Localization` extension');
@@ -57,15 +63,15 @@ export function deactivate() { }
 
 function outputNoLoc(language: string, text: String): string {
 
-	let newText: string;
+	let outText: string;
 	switch (language) {
 		case "markdown":
-			newText = ':::noloc text="' + (text.length <= 0 ? 'Word-To-Not-Localize' : text) + '":::';
+			outText = ':::noloc text="' + (text.length <= 0 ? 'Word-To-Not-Localize' : text) + '":::';
 			break;
 		default:
-			newText = 'noloc:\r\n- ' + (text.length <= 0 ? 'Word-To-Not-Localize' : text);
+			outText = 'noloc:\r\n- ' + (text.length <= 0 ? 'Word-To-Not-Localize' : text);
 			break;
 	}
 
-	return newText;
+	return outText;
 }
