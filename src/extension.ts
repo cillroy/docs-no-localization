@@ -45,6 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					break;
 			}
+
 			if (newText.length > 0) {
 				editor.edit(builder => builder.replace(selection, newText));
 			}
@@ -57,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-function outputNoLoc(language:String, text:String):String {
+function outputNoLoc(language: String, text: String): String {
 
 	let newText: String;
 	switch (language) {
