@@ -18,17 +18,17 @@ export function activate(context: vscode.ExtensionContext) {
 				default:
 					const items: vscode.QuickPickItem[] = [{
 						'label': 'markdown',
-						'description': 'add a placeholder to use within markdown',
+						'description': 'add a placeholder to use within markdown (this applies only the identified strings)',
 						'detail': 'markdown'
 					},
 					{
 						'label': 'metadata',
-						'description': 'add placeholder to use within the metada section of your page',
+						'description': 'add placeholder to use within the metada section of your page (this applies to all content within this document)',
 						'detail': 'metadata'
 					},
 					{
 						'label': 'yaml',
-						'description': 'add placeholder to use within your yaml',
+						'description': 'add placeholder to use within your yaml (this will only applies to the above node)',
 						'detail': 'yaml'
 					}];
 
@@ -65,12 +65,14 @@ function outputNoLoc(language: string, text: String): string {
 	let outText: string = '';
 	switch (language) {
 		case "markdown":
-			outText = ':::noloc text="' + (text.length <= 0 ? 'Word-To-Not-Localize' : text) + '":::';
+			outText = ':::noloc text="' + (text.length <= 0 ? 'String-To-Not-Localize' : text) + '":::';
 			break;
 		case "metadata":
+			// Can I tell if the current line is an empty string?
 			outText = 'noloc: [' + (text.length <= 0 ? 'Words, to not, Localize' : text) + ']';
 			break;
 		case "yaml":
+			// Can I tell if the current line is an empty string?
 			outText = '\r\nnoloc:\r\n  - ' + (text.length <= 0 ? 'String-To-Not-Localize' : text);
 			break;
 	}
