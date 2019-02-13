@@ -7,13 +7,14 @@ export function activate(context: vscode.ExtensionContext) {
 			const lang = editor.document.languageId;
 			const selectedText = editor.selection;
 			const text = editor.document.getText(selectedText);
+			const textEmpty = selectedText.isEmpty;
 			let newText: string = '';
 			switch (lang) {
 				case "markdown2":
-					newText = outputNoLoc(lang, text);
+					newText = outputNoLoc(lang, text, textEmpty);
 					break;
 				case "yaml2":
-					newText = outputNoLoc(lang, text);
+					newText = outputNoLoc(lang, text, textEmpty);
 					break;
 				default:
 					const items: vscode.QuickPickItem[] = [{
@@ -23,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 					},
 					{
 						'label': 'metadata',
-						'description': 'add placeholder to use within the metada section of your page (this applies to all content within this document)',
+						'description': 'add placeholder to use within the metadata section of your page (this applies to all content within this document)',
 						'detail': 'metadata'
 					},
 					{
@@ -41,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 						let langSelect = language.detail;
 						if (langSelect !== undefined) {
-							newText = outputNoLoc(langSelect, text);
+							newText = outputNoLoc(langSelect, text, textEmpty);
 						}
 						editor.edit(builder => builder.replace(selectedText, newText));
 					});
@@ -61,19 +62,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-function outputNoLoc(language: string, text: String): string {
+function outputNoLoc(language: string, text: String, emptyText: boolean): string {
 	let outText: string = '';
 	switch (language) {
 		case "markdown":
-			outText = ':::noloc text="' + (text.length <= 0 ? 'String-To-Not-Localize' : text) + '":::';
+			outText = ':::noloc text="' + (emptyText ? 'String-To-Not-Localize' : text) + '":::';
 			break;
 		case "metadata":
 			// Can I tell if the current line is an empty string?
-			outText = 'noloc: [' + (text.length <= 0 ? 'Words, to not, Localize' : text) + ']';
+			outText = '\r\nnoloc: [' + (emptyText ? 'Words, to not, Localize' : text) + ']';
 			break;
 		case "yaml":
 			// Can I tell if the current line is an empty string?
-			outText = '\r\nnoloc:\r\n  - ' + (text.length <= 0 ? 'String-To-Not-Localize' : text);
+			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
 			break;
 	}
 

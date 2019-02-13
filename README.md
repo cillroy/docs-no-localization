@@ -1,6 +1,6 @@
 # Docs Ignore Localization
 
-[![Build Status](https://dev.azure.com/cillroy/docs%20extensions/_apis/build/status/cillroy.docs-no-localization?branchName=master)](https://dev.azure.com/cillroy/docs%20extensions/_build/latest?definitionId=1&branchName=master)
+[![Current-Version](https://vsmarketplacebadge.apphb.com/version/cillroy.docs-no-localization.svg)](https://marketplace.visualstudio.com/items?itemName=cillroy.docs-no-localization)
 
 An extension to quickly add in the `noloc` markdown extension into your content.
 
