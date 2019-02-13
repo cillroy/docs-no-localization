@@ -7,6 +7,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Changed
 
+- Adding Devops build badge
+
 ## [1.0.0]
 
 - Initial release
