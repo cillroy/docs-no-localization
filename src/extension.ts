@@ -9,31 +9,31 @@ export function activate(context: vscode.ExtensionContext) {
 			const text = editor.document.getText(selectedText);
 			let newText: string = '';
 			switch (lang) {
-				case "markdown":
+				case "markdown2":
 					newText = outputNoLoc(lang, text);
 					break;
-				case "yaml":
+				case "yaml2":
 					newText = outputNoLoc(lang, text);
 					break;
 				default:
 					const items: vscode.QuickPickItem[] = [{
 						'label': 'markdown',
-						'description': 'add placeholder for markdown',
+						'description': 'add a placeholder to use within markdown',
 						'detail': 'markdown'
 					},
 					{
 						'label': 'metadata',
-						'description': 'add placeholder for metada',
+						'description': 'add placeholder to use within the metada section of your page',
 						'detail': 'metadata'
 					},
 					{
 						'label': 'yaml',
-						'description': 'add placeholder for yaml',
+						'description': 'add placeholder to use within your yaml',
 						'detail': 'yaml'
 					}];
 
 					const options: vscode.QuickPickOptions = {
-						placeHolder: 'Select which type of document you are working with'
+						placeHolder: 'Select which type (or area) of document you are working with'
 					};
 					vscode.window.showQuickPick(items, options).then(language => {
 						if (!language) {
@@ -62,14 +62,16 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 function outputNoLoc(language: string, text: String): string {
-
-	let outText: string;
+	let outText: string = '';
 	switch (language) {
 		case "markdown":
 			outText = ':::noloc text="' + (text.length <= 0 ? 'Word-To-Not-Localize' : text) + '":::';
 			break;
-		default:
-			outText = 'noloc:\r\n- ' + (text.length <= 0 ? 'Word-To-Not-Localize' : text);
+		case "metadata":
+			outText = 'noloc: [' + (text.length <= 0 ? 'Words, to not, Localize' : text) + ']';
+			break;
+		case "yaml":
+			outText = '\r\nnoloc:\r\n  - ' + (text.length <= 0 ? 'String-To-Not-Localize' : text);
 			break;
 	}
 
