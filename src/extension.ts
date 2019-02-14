@@ -82,7 +82,7 @@ function outputNoLoc(language: string, text: String, emptyText: boolean): string
 			outText = '\r\nnoloc: [' + (emptyText ? 'Words, to not, Localize' : text) + ']';
 			break;
 		case "toc-global":
-			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
+			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\n  noloc:\r\n    - ' + (emptyText ? 'Strings\r\n    - to not\r\n    - Localize' : text);
 			break;
 		case "toc-individual":
 			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
