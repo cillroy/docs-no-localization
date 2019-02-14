@@ -28,9 +28,14 @@ export function activate(context: vscode.ExtensionContext) {
 						'detail': 'metadata'
 					},
 					{
-						'label': 'yaml',
+						'label': 'yaml-global',
+						'description': 'add placeholder to use for at the header of the yaml file (this applies to all the content with this documents)',
+						'detail': 'yaml-global'
+					},
+					{
+						'label': 'yaml-individual',
 						'description': 'add placeholder to use within your yaml (this will only applies to the above node)',
-						'detail': 'yaml'
+						'detail': 'yaml-individual'
 					}];
 
 					const options: vscode.QuickPickOptions = {
@@ -69,11 +74,12 @@ function outputNoLoc(language: string, text: String, emptyText: boolean): string
 			outText = ':::noloc text="' + (emptyText ? 'String-To-Not-Localize' : text) + '":::';
 			break;
 		case "metadata":
-			// Can I tell if the current line is an empty string?
 			outText = '\r\nnoloc: [' + (emptyText ? 'Words, to not, Localize' : text) + ']';
 			break;
-		case "yaml":
-			// Can I tell if the current line is an empty string?
+		case "yaml-global":
+			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
+			break;
+		case "yaml-individual":
 			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
 			break;
 	}
