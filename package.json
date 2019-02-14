@@ -27,8 +27,8 @@
 		"keybindings": [
 			{
 				"command": "extension.docs-no-localization",
-				"key": "ctrl+d ctrl+n",
-				"mac": "ctrl+d ctrl+n"
+				"key": "alt+d n",
+				"mac": "alt+d n"
 			}
 		]
 	},
