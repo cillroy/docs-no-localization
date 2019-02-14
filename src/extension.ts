@@ -23,14 +23,19 @@ export function activate(context: vscode.ExtensionContext) {
 						'detail': 'markdown'
 					},
 					{
-						'label': 'metadata',
+						'label': 'metadata (yaml or markdown)',
 						'description': 'add placeholder to use within the metadata section of your page (this applies to all content within this document)',
 						'detail': 'metadata'
 					},
 					{
-						'label': 'yaml-global',
-						'description': 'add placeholder to use for at the header of the yaml file (this applies to all the content with this documents)',
-						'detail': 'yaml-global'
+						'label': 'toc-global',
+						'description': 'add placeholder to use for at the top of the toc yaml file (this applies to all the content with this documents)',
+						'detail': 'toc-global'
+					},
+					{
+						'label': 'toc-individual',
+						'description': 'add placeholder to use within your toc yaml (this will only applies to the above node)',
+						'detail': 'toc-individual'
 					},
 					{
 						'label': 'yaml-individual',
@@ -76,8 +81,11 @@ function outputNoLoc(language: string, text: String, emptyText: boolean): string
 		case "metadata":
 			outText = '\r\nnoloc: [' + (emptyText ? 'Words, to not, Localize' : text) + ']';
 			break;
-		case "yaml-global":
+		case "toc-global":
 			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
+			break;
+		case "toc-individual":
+			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
 			break;
 		case "yaml-individual":
 			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
