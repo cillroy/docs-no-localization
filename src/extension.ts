@@ -1,5 +1,9 @@
 import * as vscode from 'vscode';
 
+const sampleString: string = 'String-To-Not-Localize';
+const sampleArray: string = 'Words, to not, Localize';
+const sampleYaml: string = 'Strings\r\n    - to not\r\n    - Localize';
+
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('extension.docs-no-localization', () => {
 		if (vscode.window.activeTextEditor !== undefined) {
@@ -9,6 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 			const text = editor.document.getText(selectedText);
 			const textEmpty = selectedText.isEmpty;
 			let newText: string = '';
+			let langSelect = '';
 			switch (lang) {
 				case "markdown2":
 					newText = outputNoLoc(lang, text, textEmpty);
@@ -50,8 +55,8 @@ export function activate(context: vscode.ExtensionContext) {
 						if (!language) {
 							return;
 						}
-						let langSelect = language.detail;
-						if (langSelect !== undefined) {
+						if (language.detail !== undefined) {
+							langSelect = language.detail;
 							newText = outputNoLoc(langSelect, text, textEmpty);
 						}
 						editor.edit(builder => builder.replace(selectedText, newText));
@@ -62,6 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 			if (newText.length > 0) {
 				editor.edit(builder => builder.replace(selectedText, newText));
+				selectNewText(langSelect, editor);
 			}
 		} else {
 			vscode.window.showErrorMessage('You must have a file open to use the `Docs No Localization` extension');
@@ -76,21 +82,46 @@ function outputNoLoc(language: string, text: String, emptyText: boolean): string
 	let outText: string = '';
 	switch (language) {
 		case "markdown":
-			outText = ':::noloc text="' + (emptyText ? 'String-To-Not-Localize' : text) + '":::';
+			outText = ':::noloc text="' + (emptyText ? sampleString : text) + '":::';
 			break;
 		case "metadata":
-			outText = '\r\nnoloc: [' + (emptyText ? 'Words, to not, Localize' : text) + ']';
+			outText = '\r\nnoloc: [' + (emptyText ? sampleArray : text) + ']';
 			break;
 		case "toc-global":
-			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\n  noloc:\r\n    - ' + (emptyText ? 'Strings\r\n    - to not\r\n    - Localize' : text);
+			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\n  noloc:\r\n    - ' + (emptyText ? sampleYaml : text);
 			break;
 		case "toc-individual":
-			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
+			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? sampleString : text);
 			break;
 		case "yaml-individual":
-			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? 'String-To-Not-Localize' : text);
+			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? sampleString : text);
 			break;
 	}
 
 	return outText;
+}
+
+function selectNewText(language: string, editor: vscode.TextEditor) {
+	const range: vscode.Position = new vscode.Position(1, 5);
+	let samples: string = '';
+	editor.document.getWordRangeAtPosition(range);
+	console.log(editor.document.getText(editor.selection));
+	switch (language) {
+		case "markdown":
+			samples = sampleString;
+			break;
+		case "metadata":
+			samples = sampleArray;
+			break;
+		case "toc-global":
+			samples = sampleArray;
+			break;
+		case "toc-individual":
+			samples = sampleYaml;
+			break;
+		case "yaml-individual":
+			samples = sampleYaml;
+			break;
+	}
+	
 }
