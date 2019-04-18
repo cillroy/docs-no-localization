@@ -82,19 +82,19 @@ function outputNoLoc(language: string, text: String, emptyText: boolean): string
 	let outText: string = '';
 	switch (language) {
 		case "markdown":
-			outText = ':::noloc text="' + (emptyText ? sampleString : text) + '":::';
+			outText = ':::no-loc text="' + (emptyText ? sampleString : text) + '":::';
 			break;
 		case "metadata":
-			outText = '\r\nnoloc: [' + (emptyText ? sampleArray : text) + ']';
+			outText = '\r\nno-loc: [' + (emptyText ? sampleArray : text) + ']';
 			break;
 		case "toc-global":
-			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\n  noloc:\r\n    - ' + (emptyText ? sampleYaml : text);
+			outText = '\r\n\\\\this is required at the top level of the file\r\nmetadata:\r\n  no-loc:\r\n    - ' + (emptyText ? sampleYaml : text);
 			break;
 		case "toc-individual":
-			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? sampleString : text);
+			outText = '\r\nno-loc:\r\n  - ' + (emptyText ? sampleString : text);
 			break;
 		case "yaml-individual":
-			outText = '\r\nnoloc:\r\n  - ' + (emptyText ? sampleString : text);
+			outText = '\r\nno-loc:\r\n  - ' + (emptyText ? sampleString : text);
 			break;
 	}
 
